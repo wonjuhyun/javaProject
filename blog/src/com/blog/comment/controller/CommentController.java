@@ -9,6 +9,7 @@ import com.blog.comment.service.CommentViewService;
 import com.blog.comment.service.CommentWriteService;
 import com.blog.comment.vo.Comment;
 import com.blog.main.service.Execute;
+import com.blog.member.vo.Login;
 import com.blog.util.io.CommentPrint;
 import com.blog.util.io.In;
 
@@ -49,61 +50,49 @@ public class CommentController {
 				case "2" :
 //					System.out.println("댓글 작성 처리");
 					vo = new Comment();
+					vo.setPostNo(Post.getPostNO());
+					vo.setWriterId(Login.getId());
 					vo.setContent(In.getStr("댓글 입력"));
 					result = (Integer) Execute.execute(new CommentWriteService(), vo);
 					break;
 				case "3" :
-//					case "3" :
-					System.out.println("내 댓글 보기 처리");
-					
+					// 2. 조회할 데이터 세팅 (게시글 번호 + 로그인된 내 아이디)
+					vo = new Comment();
+					vo.setPostNo(Post.getPostNo());
+					vo.setWriterId(Login.getId()); // 로그인 정보 자동 입력
 					// 1. 로그인 여부 확인 (Main.login에 로그인 정보가 있다고 가정)
 					// if (Main.login == null) { System.out.println("로그인이 필요합니다."); break; }
-
-					// 2. 게시글 번호 입력 받기
-					Comment searchVO = new Comment();
-					searchVO.setPostNo(In.getInt("게시글 번호")); 
-					
-					// 3. 내 아이디 세팅 (테스트를 위해 강제로 "testId"라고 넣거나, Main.login.getId() 사용)
-					// 실제 사용 시: searchVO.setWriterId(Main.login.getId());
-					searchVO.setWriterId(Main.login.getId()); // ★ 테스트용 임시 ID (나중에 Main.login.getId()로 변경하세요)
-
-					// 4. 서비스 실행 (새로 만들 Service 클래스 호출)
-					// 결과는 목록(List)이어야 하므로 List로 형변환
-					@SuppressWarnings("unchecked")
-					List<Comment> myList = (List<Comment>) Execute.execute(new CommentMyListService(), searchVO); 
 					
 					// 5. 출력
-					CommentPrint.print(myList);
-				case "4" :
-					// 1. 수정할 글 번호를 입력받는다.
-					no = In.getInt("댓글 번호");
-					// 2. 입력받은 글 번호의 데이터를 가져온다. (vo = 글 보기)
-					// new Long[] {no, 1L} - new Long[] {번호:0, 증가:1} - 생성하고 바로 초기값을 세팅한다.
-					vo = (Comment) Execute.execute(new CommentViewService(), new Long[] {no, 0L}); 
 					CommentPrint.print(vo);
-					// 3. 가져온 데이터를 수정 입력한다. (수정 항목 선택 -> 입력 : 입력 끝남 선택 빠져나옴)
-					Integer item = update(vo);
-					// 4. DB 수정하러 간다. (BoardUpdateService)
-					// 수정 데이터 확인
-//					System.out.println("------ 수정 데이터 확인 ------");
-//					BoardPrint.print(vo);
 					
-					if (item == 9) {
-						System.out.println("**** 수정이 취소되었습니다. ****\n");
-					} else {
-						// 수정하러 간다
-						// 본인 확인용 비밀번호를 받는다
-						result = (Integer) Execute.execute(new CommentUpdateService(), vo);
+					break;
+				case "4" :
+					
+					Comment checkVO = (Comment) Execute.execute(new CommentViewService(), vo);
+					
+					if (checkVO != null) {
+						CommentPrint.print(checkVO);
+						
+						// 내용 수정 입력 (내부에서 checkVO 내용이 바뀜)
+						update(checkVO);
+						
+						// [수정] 실제로 DB에 업데이트하는 코드 추가
+						result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
+						
 						if (result >= 1) System.out.println("***** 수정이 완료되었습니다. *****");
-						else System.out.println("***** 수정에 실패했습니다. 정보를 다시 확인해 주세요. *****");
+						else System.out.println("***** 수정 실패 *****");
+						
+					} else {
+						System.out.println("***** 이 게시글에 작성하신 댓글이 없습니다. *****");
 					}
-					
 					break;
 				case "5" :
 					System.out.println("댓글 삭제 처리");
 					// 글번호와 비밀번호 받기 - vo
 					vo = new Comment();
-					vo.setCommentNo(In.getInt("댓글 번호"));
+					vo.setPostNo(Post.getPostNo());
+					vo.setWriterId(Login.getId());
 					result = (Integer) Execute.execute(new CommentDeleteService(), vo);
 					if (result >= 1) System.out.println("***** 삭제가 완료되었습니다. *****");
 					else System.out.println("***** 삭제가 되지 않았습니다. 정보를 다시 확인해 주세요. *****");
