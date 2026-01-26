@@ -1,6 +1,7 @@
 package com.blog.subscribe.service;
 
 import com.blog.main.service.Service;
+import com.blog.subscribe.dao.SubscribesDAO;
 
 public class FollowingIdListService implements Service {
 

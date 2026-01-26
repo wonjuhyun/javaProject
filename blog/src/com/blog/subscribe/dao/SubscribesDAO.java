@@ -1,13 +1,29 @@
 package com.blog.subscribe.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.blog.member.vo.LoginVO;
+import com.blog.subscribe.vo.SubscribesVO;
+import com.blog.util.db.DB;
+
 public class SubscribesDAO {
 
+	Connection con = null;
+	// 쿼리를 실행하는 객체
+	PreparedStatement pstmt = null;
+	// 결과를 저장하는 객체 - select 일때만 사용되는 객체
+	ResultSet rs = null;
+
 	// 5-1. 내가 구독한 사람 리스트
-	public List<Subscribes> followingList(String loginId) throws Exception {
-		List<Subscribes> list = new ArrayList<>();
+	public List<SubscribesVO> followingList(String loginId) throws Exception {
+		List<SubscribesVO> list = new ArrayList<>();
 
 		try { // try~catch : 에러방지
-			// 드라이버 확인+연결 객체
+				// 드라이버 확인+연결 객체
 			con = DB.getConnection();
 
 			// 실행할 쿼리 작성
@@ -23,7 +39,7 @@ public class SubscribesDAO {
 			// DB에서 가져온 데이터 채우기
 			if (rs != null) {
 				while (rs.next()) {
-					Subscribes vo = new Subscribes();
+					SubscribesVO vo = new SubscribesVO();
 					vo.setFollowingId(rs.getString("following_id"));
 					list.add(vo);
 				}
@@ -39,7 +55,7 @@ public class SubscribesDAO {
 	}
 
 	// 5-1-1. 구독하기
-	public int insert(Subscribes vo) throws Exception {
+	public int insert(SubscribesVO vo) throws Exception {
 		int result = 0;
 
 		try {
@@ -66,7 +82,7 @@ public class SubscribesDAO {
 	}
 
 	// 5-1-2. 구독 취소하기
-	public int delete(Subscribes vo) throws Exception {
+	public int delete(SubscribesVO vo) throws Exception {
 		int result = 0;
 
 		try {
@@ -92,11 +108,11 @@ public class SubscribesDAO {
 	}
 
 	// 5-2. 나를 구독한 사람 리스트
-	public List<Subscribes> followerList(String loginId) throws Exception {
-		List<Subscribes> list = new ArrayList<>();
+	public List<SubscribesVO> followerList(String loginId) throws Exception {
+		List<SubscribesVO> list = new ArrayList<>();
 
 		try { // try~catch : 에러방지
-			// 드라이버 확인+연결 객체
+				// 드라이버 확인+연결 객체
 			con = DB.getConnection();
 
 			// 실행할 쿼리 작성
@@ -112,7 +128,7 @@ public class SubscribesDAO {
 			// DB에서 가져온 데이터 채우기
 			if (rs != null) {
 				while (rs.next()) {
-					Subscribes vo = new Subscribes();
+					SubscribesVO vo = new SubscribesVO();
 					vo.setFollowerId(rs.getString("follower_id"));
 					list.add(vo);
 				}
