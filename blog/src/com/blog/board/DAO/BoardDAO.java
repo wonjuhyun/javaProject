@@ -101,7 +101,7 @@ public class BoardDAO {
         String sql = "SELECT NVL(MAX(post_no),0) + 1 AS nextNo FROM Posts";
         pstmt = con.prepareStatement(sql);
         rs = pstmt.executeQuery();
-
+ 
         if (rs.next()) {
             nextNo = rs.getInt("nextNo");
         }
