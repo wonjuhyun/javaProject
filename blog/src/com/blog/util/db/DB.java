@@ -10,7 +10,7 @@ public class DB {
 	// DB 연결 정보
 	private static final String DRIVER = "oracle.jdbc.OracleDriver";
 	private static final String URL = "jdbc:oracle:thin:@10.15.21.232:1521:xe";
-	private static final String UID = "java";
+	private static final String UID = "team2";
 	private static final String UPW = "java";
 	
 	static {
@@ -44,3 +44,4 @@ public class DB {
 		if (rs != null) rs.close();
 	}
 }
+
