@@ -43,7 +43,7 @@ public class BoardController {
                 case "3":
                     System.out.println("게시글 글등록");
                     break;
-
+                    	
                 case "4":
                     System.out.println("게시글 글삭제");
                     break;

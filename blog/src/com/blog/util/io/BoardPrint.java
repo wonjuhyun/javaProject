@@ -10,7 +10,7 @@ public class BoardPrint {
 		    System.out.println("==============================================");
 		    System.out.println("번호|제목|작성자|작성일|수정일|조회수|0. 나가기");
 	        System.out.println("==============================================");
-			//가져온 데이터 출력
+		
 			for (BoardVO vo : list) {
 				System.out.print(" | "+ vo.getPostNo());
 				System.out.print(" | "+ vo.getTitle());
