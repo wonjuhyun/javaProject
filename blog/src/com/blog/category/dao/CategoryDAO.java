@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blog.category.model.Category;
-
-import com.blog.common.DBUtil;
+import com.blog.category.vo.Category;
+import com.blog.util.db.DB;
 
 public class CategoryDAO {
 
@@ -18,7 +17,7 @@ public class CategoryDAO {
         String sql = "SELECT cate_no, cate_name FROM category ORDER BY cate_no";
 
         try (
-            Connection conn = DBUtil.getConnection();
+            Connection conn = DB.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
         ) {
