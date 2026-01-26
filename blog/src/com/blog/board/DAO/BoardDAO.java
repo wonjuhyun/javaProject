@@ -12,7 +12,7 @@ import com.blog.board.vo.BoardVO;
 public class BoardDAO {
     Connection con = null;
     PreparedStatement pstmt = null;
-    ResultSet rs = null;
+    ResultSet rs = null; 
 
     final String DRIVER = "oracle.jdbc.OracleDriver";
     final String URL = "jdbc:oracle:thin:@10.15.21.232:1521:xe";
