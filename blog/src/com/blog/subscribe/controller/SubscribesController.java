@@ -15,7 +15,7 @@ public class SubscribesController {
 
     private Scanner scanner = new Scanner(System.in);
 
-    // 메인에서 "5"번 선택 시 실행
+    // 메인에서 <구독> 선택 시 실행
     public void execute(String loginId) {
         while (true) {
             System.out.println("\n===================================");
@@ -28,7 +28,7 @@ public class SubscribesController {
             if (menu.equals("1")) {
                 followingMenu(loginId); // 1. 구독 리스트 상세 메뉴로
             } else if (menu.equals("2")) {
-                followerMenu(loginId);  // 2. 구독자 리스트 상세 메뉴로
+                followerMenu(loginId);  // 2. 구독자 리스트로
             } else if (menu.equals("0")) {
                 return; // 메인으로 돌아가기
             } else {
