@@ -2,7 +2,7 @@ package com.blog.comment.controller;
 
 import java.util.List;
 
-import com.blog.board.vo.BoardVO;
+import com.blog.board.vo.CurrentBoard;
 import com.blog.comment.service.CommentDeleteService;
 import com.blog.comment.service.CommentListService;
 import com.blog.comment.service.CommentUpdateService;
@@ -44,7 +44,6 @@ public class CommentController {
 				// 사용 변수 선언
 				Comment vo;
 				Integer result;
-				BoardVO board;
 				
 				switch (menu) {
 				
@@ -52,7 +51,7 @@ public class CommentController {
 				case "1" :
 					// 현재 게시글 번호를 담아서 서비스로 전송
 					vo = new Comment();
-					vo.setPostNo(board.getPostNo());
+					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					
 					@SuppressWarnings("unchecked")
 					// vo를 파라미터로 전달
@@ -72,7 +71,7 @@ public class CommentController {
 					
 					if(write.equals("1")) {
 						vo = new Comment();
-						vo.setPostNo(board.getPostNo()); // 메서드명 확인 (getPostNo)
+						vo.setPostNo(CurrentBoard.getBoardVO().getPostNo()); // 메서드명 확인 (getPostNo)
 						vo.setWriterId(Login.getId());
 						vo.setContent(content);
 						
@@ -86,7 +85,7 @@ public class CommentController {
 				// 내 댓글 보기
 				case "3" :
 					vo = new Comment();
-					vo.setPostNo(board.getPostNo());
+					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// DB에서 내 댓글 가져오기
@@ -98,7 +97,7 @@ public class CommentController {
 				case "4" :
 					
 					vo = new Comment();
-					vo.setPostNo(board.getPostNo());
+					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// 1. 수정할 내 댓글이 있는지 DB에서 가져오기
@@ -138,7 +137,7 @@ public class CommentController {
 					
 					// 1. 삭제할 대상 정보 세팅 (게시글 번호 + 내 아이디)
 					vo = new Comment();
-					vo.setPostNo(board.getPostNo());
+					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// 2. 경고 문구 출력 및 메뉴 선택
