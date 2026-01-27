@@ -13,18 +13,23 @@ public class LikeController {
 
 	public void execute() throws Exception {
 		LikeVO vo = new LikeVO();
-		LikeDAO like = new LikeDAO();
+		LikeDAO dao = new LikeDAO();
+		Boolean isLiked = dao.isLiked(vo);
 		BoardVO board = new BoardVO();
 
-		vo.setPostNo(CurrentBoard.getBoardVO().getPostNo()); 
+		int postNo = CurrentBoard.getBoardVO().getPostNo();
+		vo.setPostNo(postNo); 
 		vo.setLikerId(Login.getId());
+		String id = board.getWriterId();
 		
-		if(like.isLiked(vo)) {
-			Execute.execute(new LikeInsertService(), vo);
-			System.out.println("*** '" + board.getWriterNick() + "'님의 게시글에 공감을 누르셨습니다. ***");
-		} else {
+		if(isLiked) {
 			Execute.execute(new LikeDeleteService(), vo);
-			System.out.println("*** '" + board.getWriterNick() + "'님의 게시글에 공감을 취소하셨습니다. ***");
+			System.out.println("*** '" + id + "'님의 게시글에 공감을 취소하셨습니다. ***");
+			System.out.println(" 공감 수 : " + postNo);
+		} else {
+			Execute.execute(new LikeInsertService(), vo);
+			System.out.println("*** '" + id + "'님의 게시글에 공감을 누르셨습니다. ***");
+			System.out.println(" 공감 수 : " + postNo);
 		}
 
 	}
