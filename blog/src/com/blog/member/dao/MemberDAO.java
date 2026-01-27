@@ -14,7 +14,7 @@ public class MemberDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	// ===================== 로그인 =====================
+	// ===================== 로그인 ===================== //
 	public LoginVO login(LoginVO obj) throws Exception {
 
 		LoginVO vo = null;

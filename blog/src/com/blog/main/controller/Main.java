@@ -105,7 +105,7 @@ public class Main {
 	} // static void 끝
 
 	private static void invalidMenuPrint() {
-		System.out.println("잘못된 메뉴입니다. 다시 입력하세요.");
+		System.out.println("잘못된 메뉴입니다. 다시 입력하세요. \n");
 
 	}
 } // Main() 끝

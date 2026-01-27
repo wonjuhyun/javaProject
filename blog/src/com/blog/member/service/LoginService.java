@@ -11,4 +11,5 @@ public class LoginService implements Service {
 		MemberDAO dao = new MemberDAO();
 		return dao.login((LoginVO) obj);
 	}
+	
 }
