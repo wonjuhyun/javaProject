@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.blog.member.vo.LoginVO;
 import com.blog.subscribe.vo.SubscribesVO;
 import com.blog.util.db.DB;
 

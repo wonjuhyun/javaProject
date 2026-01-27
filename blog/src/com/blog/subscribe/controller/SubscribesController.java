@@ -34,11 +34,12 @@ public class SubscribesController {
             } else {
                 System.out.println("다시 한 번 확인해주세요.");
             }
-        }
+		}
     }
 
     // 1. 구독 리스트 메뉴 (출력 + 구독하기/취소하기)
-    private void followingMenu(String loginId) {
+    @SuppressWarnings("unchecked")
+	private void followingMenu(String loginId) {
         while (true) {
             System.out.println("\n===================================");
             System.out.println("<구독 리스트>");
@@ -113,7 +114,8 @@ public class SubscribesController {
     }
 
     // 2. 구독자 리스트 메뉴
-    private void followerMenu(String loginId) {
+    @SuppressWarnings("unchecked")
+	private void followerMenu(String loginId) {
         System.out.println("\n===================================");
         System.out.println("<구독자 리스트>");
         try {
