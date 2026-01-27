@@ -2,6 +2,7 @@ package com.blog.comment.controller;
 
 import java.util.List;
 
+import com.blog.board.vo.BoardVO;
 import com.blog.comment.service.CommentDeleteService;
 import com.blog.comment.service.CommentListService;
 import com.blog.comment.service.CommentUpdateService;
@@ -10,12 +11,12 @@ import com.blog.comment.service.CommentWriteService;
 import com.blog.comment.vo.Comment;
 import com.blog.main.controller.Main;
 import com.blog.main.service.Execute;
-//import com.blog.member.vo.Login;
+import com.blog.member.vo.Login;
 import com.blog.util.io.CommentPrint;
 import com.blog.util.io.In;
 
-import a.Login;
-import a.Post;
+//import a.Login;
+//import a.Post;
 
 
 public class CommentController {
@@ -43,6 +44,7 @@ public class CommentController {
 				// 사용 변수 선언
 				Comment vo;
 				Integer result;
+				BoardVO board;
 				
 				switch (menu) {
 				
@@ -50,7 +52,7 @@ public class CommentController {
 				case "1" :
 					// 현재 게시글 번호를 담아서 서비스로 전송
 					vo = new Comment();
-					vo.setPostNo(Post.getPostNo());
+					vo.setPostNo(board.getPostNo());
 					
 					@SuppressWarnings("unchecked")
 					// vo를 파라미터로 전달
@@ -70,7 +72,7 @@ public class CommentController {
 					
 					if(write.equals("1")) {
 						vo = new Comment();
-						vo.setPostNo(Post.getPostNo()); // 메서드명 확인 (getPostNo)
+						vo.setPostNo(board.getPostNo()); // 메서드명 확인 (getPostNo)
 						vo.setWriterId(Login.getId());
 						vo.setContent(content);
 						
@@ -84,39 +86,34 @@ public class CommentController {
 				// 내 댓글 보기
 				case "3" :
 					vo = new Comment();
-					vo.setPostNo(Post.getPostNo());
+					vo.setPostNo(board.getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// DB에서 내 댓글 가져오기
 					Comment myComment = (Comment) Execute.execute(new CommentViewService(), vo);
-					
-					if (myComment != null) {
-						CommentPrint.print(myComment);
-					} else {
-						System.out.println("\n ***** 작성하신 댓글이 없습니다. *****");
-					}
+					CommentPrint.print(myComment);
 					break;
 					
 				// 댓글 수정
 				case "4" :
 					
 					vo = new Comment();
-					vo.setPostNo(Post.getPostNo());
+					vo.setPostNo(board.getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// 1. 수정할 내 댓글이 있는지 DB에서 가져오기
 					Comment checkVO = (Comment) Execute.execute(new CommentViewService(), vo);
-					
+
+					System.out.println("<< 댓글 수정 >>"); 
+					System.out.println("=============================================================");
 					if (checkVO != null) {
 						// 2. 현재 내용 보여주기
-						System.out.println("<< 댓글 수정 >>"); 
-						System.out.println("=================================================================");
 						System.out.println(" " + checkVO.getWriterNick() + " : " + checkVO.getContent());
 						System.out.println("-----------------------------------------------------------------");
 						
 						// 3. 여기서 직접 입력을 받습니다. (기존 update 메서드 호출 제거)
-						String newContent = In.getStr("수정할 내용");
-						System.out.println("=================================================================");
+						String newContent = In.getStr(" 수정할 내용");
+						System.out.println("=============================================================");
 						
 						// 입력받은 내용을 VO에 세팅 (이게 있어야 DB에 반영됨)
 						checkVO.setContent(newContent);
@@ -124,11 +121,12 @@ public class CommentController {
 						// 4. DB 업데이트 실행 (변경된 내용이 담긴 checkVO를 전달)
 						result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
 						
-						if (result >= 1) System.out.println("\n ***** 수정이 완료되었습니다. *****");
-						else System.out.println("\n ***** 수정 실패 *****");
+						if (result >= 1) System.out.println(" ***** 수정이 완료되었습니다. *****");
+						else System.out.println(" ***** 수정 실패 *****");
 						
 					} else {
-						System.out.println("\n ***** 이 게시글에 작성하신 댓글이 없습니다. *****");
+						System.out.println(" 이 게시글에 작성하신 댓글이 없습니다. ");
+						System.out.println("=============================================================");
 					}
 					break;
 					
@@ -140,7 +138,7 @@ public class CommentController {
 					
 					// 1. 삭제할 대상 정보 세팅 (게시글 번호 + 내 아이디)
 					vo = new Comment();
-					vo.setPostNo(Post.getPostNo());
+					vo.setPostNo(board.getPostNo());
 					vo.setWriterId(Login.getId());
 					
 					// 2. 경고 문구 출력 및 메뉴 선택
