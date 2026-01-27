@@ -20,10 +20,10 @@ public class LoginController {
 		} else {
 			Login.setLoginVO(resultVO);
 			System.out.println(resultVO.getName() + " 님 환영합니다!");
-			
+
 			return;
 		}
-
+		
 	}
-
+	
 }

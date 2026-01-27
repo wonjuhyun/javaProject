@@ -43,5 +43,4 @@ public class LoginVO {
 	public String toString() {
 		return "LoginVO [id=" + id + ", pw=" + pw + ", name=" + name + ", nickname=" + nickname + "]";
 	}
-
 }

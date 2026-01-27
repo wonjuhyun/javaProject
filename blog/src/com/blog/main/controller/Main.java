@@ -1,7 +1,11 @@
 package com.blog.main.controller;
 
+import com.blog.main.service.Execute;
 import com.blog.member.controller.MemberController;
+import com.blog.member.service.MemberSearchIdService;
+import com.blog.member.service.MemberUserChangePwService;
 import com.blog.member.vo.Login;
+import com.blog.member.vo.MemberVO;
 import com.blog.util.io.In;
 
 public class Main {
@@ -44,8 +48,7 @@ public class Main {
 					if (!Login.isLogin()) { // 로그인을 하지 않은 경우 - 로그인
 						new LoginController().execute();
 					} else { // 로그인 한 경우 - 개인 정보 수정
-						
-
+						System.out.println("1. 개인 정보 수정 \n");
 					}
 					break;
 
@@ -53,9 +56,45 @@ public class Main {
 					if (!Login.isLogin()) { // 로그인을 하지 않은 경우 - 회원가입
 						new MemberController().execute();
 					} else { // 로그인 한 경우 - 로그아웃
+						Login.setLoginVO(null);
+						System.out.println("로그아웃 되셨습니다 \n");
+					}
+					break;
+
+				case "3":
+					if (!Login.isLogin()) { // 로그인을 하지 않은 경우 - 아이디 찾기
+						System.out.println("*** 아이디 찾기 ***");
+						MemberVO vo11 = new MemberVO();
+						vo11.setName(In.getStr("이름"));
+						vo11.setEmail(In.getStr("이메일"));
+						String id = (String) Execute.execute(new MemberSearchIdService(), vo11);
+						System.out.println("찾으시는 아이디 : " + id + "\n");
+					} else { // 로그인을 한 경우 - 블로그 방문하기
 
 					}
 					break;
+
+				case "4":
+					if (!Login.isLogin()) { // 로그인을 하지 않은 경우 - 비밀번호 찾기
+						System.out.println("*** 비밀번호 변경 ***");
+						MemberVO vo2 = new MemberVO();
+						vo2.setId(In.getStr("아이디"));
+						vo2.setPw(In.getStr("현재 비밀번호"));
+						vo2.setNewPw(In.getStr("새 비밀번호"));
+						Integer result = (Integer) Execute.execute(new MemberUserChangePwService(), vo2);
+						System.out.println(result == 1 ? "비밀번호 변경 완료\n" : "비밀번호 변경 실패\n");
+					} else { // 로그인을 한 경우 - 나의 블로그 보기
+
+					}
+					break;
+
+				case "0":
+					System.out.println("프로그램을 종료합니다.");
+					System.exit(0);
+
+				default:
+					invalidMenuPrint();
+
 				} // switch(menu) 끝
 
 			} catch (Exception e) {
@@ -64,4 +103,9 @@ public class Main {
 		} // while (true) 끝
 
 	} // static void 끝
+
+	private static void invalidMenuPrint() {
+		System.out.println("잘못된 메뉴입니다. 다시 입력하세요. \n");
+
+	}
 } // Main() 끝
