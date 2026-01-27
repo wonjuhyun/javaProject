@@ -1,9 +1,7 @@
 package com.blog.util.io;
 
 import java.util.List;
-
 import com.blog.board.vo.BoardVO;
-
 public class BoardPrint {
 	public static void print(List<BoardVO>list) {
 			System.out.println("              [게시글 리스트]                  ");

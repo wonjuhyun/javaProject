@@ -22,7 +22,7 @@ public class BoardController {
             System.out.println("3. 게시글 글수정 4. 게시글 글삭제");
             System.out.println("0. 나가기");
             System.out.println("============================");
-           
+            System.out.println("번호를 입력해주세요. >>>");
             String menu = In.getStr(); 
             int no;
             System.out.println();
@@ -108,6 +108,7 @@ public static Integer view (BoardVO vo) {
         System.out.println("===================================================");
         System.out.println("1. 공감 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
         System.out.println("===================================================");
+        System.out.println("번호를 입력해주세요. >>>");
         String menu = In.getStr("선택");
         switch (menu) {
     	case "1":
@@ -141,6 +142,7 @@ public static Integer view (BoardVO vo) {
             System.out.println("==========================================================");
             System.out.println(" 1. 제목  2. 내용  3.카테고리	 8. 수정 완료  9. 수정 취소 0. 나가기");
             System.out.println("==========================================================");
+            System.out.println("번호를 입력해주세요. >>>");
             String menu = In.getStr("선택");
             switch (menu) {
         	case "1":
@@ -176,6 +178,7 @@ public static Integer view (BoardVO vo) {
     	        System.out.println("정말로 이 글을 삭제하시겠습니까?");
     	        System.out.println("1.Yes  2.No  0: 나가기");
     	        System.out.println("==========================================================");
+    	        System.out.println("번호를 입력해주세요. >>>");
 
     	        String menu = In.getStr("선택");
 
