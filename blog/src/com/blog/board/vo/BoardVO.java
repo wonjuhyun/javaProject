@@ -9,9 +9,7 @@ public class BoardVO {
 
 private int postNo;              // 게시글 번호 (PK)
 
-private String writerId;  // 작성자 아이디
-
-private String writerNick;  //작성자 닉네임
+private String writerId;         // 작성자 아이디
 
 private int cateNo;              // 카테고리 번호
 
@@ -121,22 +119,11 @@ public void setUpdatedAt(String updatedAt) { //수정일 설정
 
 	}
 
-
-public String getWriterNick() {
-	return writerNick;
-}
-
-public void setWriterNick(String writerNick) {
-	this.writerNick = writerNick;
-}
-
 @Override
 public String toString() {
-	return "BoardVO [postNo=" + postNo + ", writerId=" + writerId + ", writerNick=" + writerNick + ", cateNo=" + cateNo
-			+ ", title=" + title + ", content=" + content + ", hit=" + hit + ", createdAt=" + createdAt + ", updatedAt="
-			+ updatedAt + "]";
+	return "Post [postNo=" + postNo + ", writerId=" + writerId + ", cateNo=" + cateNo + ", title=" + title
+			+ ", content=" + content + ", hit=" + hit + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 }
-
 
 
 }

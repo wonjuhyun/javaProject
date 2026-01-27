@@ -11,6 +11,7 @@ public class BoardlistCategory implements Service{
 	@Override
 	public Object service(Object obj) throws Exception {
 		 Integer cateNo = (Integer) obj;
+
 	      BoardDAO dao = new BoardDAO();
 	      List<BoardVO> list = dao.listCategory(cateNo);
 
