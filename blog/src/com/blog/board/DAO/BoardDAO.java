@@ -136,7 +136,7 @@ public class BoardDAO {
             list.add(vo);
         }
 
-        DB.close(con, pstmt, rs); // rs도 닫아주는 게 안전합니다
+        DB.close(con, pstmt, rs); 
 
         return list;
     }

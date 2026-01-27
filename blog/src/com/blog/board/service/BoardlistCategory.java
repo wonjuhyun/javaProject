@@ -14,7 +14,6 @@ public class BoardlistCategory implements Service{
 
 	      BoardDAO dao = new BoardDAO();
 	      List<BoardVO> list = dao.listCategory(cateNo);
-
 	        return list;
 	}
 
