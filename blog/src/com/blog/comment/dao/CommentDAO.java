@@ -24,12 +24,12 @@ public class CommentDAO {
 		// 2. AND 조건으로 테이블 조인 (comments와 users)
 		// 3. ORDER BY c.comment_no DESC (최신 댓글이 위로)
 		String sql = "SELECT u.nickname, c.content, c.writer_id, "
-				   + " to_char(c.created_at, 'yyyy-mm-dd') created_at, "
-				   + " to_char(c.updated_at, 'yyyy-mm-dd') updated_at "
+				   + " to_char(c.created_at, 'yyyy-mm-dd hh:mm:ss') created_at, "
+				   + " to_char(c.updated_at, 'yyyy-mm-dd hh:mm:ss') updated_at "
 				   + " FROM comments c, users u "
 				   + " WHERE c.post_no = ? "      // 이 게시글의 댓글만
 				   + " AND c.writer_id = u.id " // 작성자 닉네임 가져오기 위한 조인
-				   + " ORDER BY c.comment_no DESC";
+				   + " ORDER BY created_at DESC";
 		
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, postNo); // 게시글 번호 세팅
@@ -60,8 +60,8 @@ public class CommentDAO {
 		// 1. 드라이버 확인 & 2. 연결 객체
 		con = DB.getConnection();
 		// 3. SQL 작성
-		String sql = "insert into comments(comment_no, post_no, content, writer_id, created_at) "
-				+ " values(comments_seq.nextval, ?, ?, ?, sysdate)";
+		String sql = "insert into comments(post_no, content, writer_id, created_at, updated_at) "
+				+ " values(?, ?, ?, sysdate, null)";
 		// 4. 실행 객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, vo.getPostNo());
@@ -115,8 +115,8 @@ public class CommentDAO {
 		// 1. 드라이버 확인 & 2. 연결 객체
 		con = DB.getConnection();
 		// 3. SQL
-		String sql = "select u.nickname, c.content, to_char(created_at, 'yyyy-mm-dd') created_at, "
-				+ " to_char(updated_at, 'yyyy-mm-dd') updated_at from comments c, users u "
+		String sql = "select u.nickname, c.content, to_char(created_at, 'yyyy-mm-dd hh:mm:ss') created_at, "
+				+ " to_char(updated_at, 'yyyy-mm-dd hh:mm:ss') updated_at from comments c, users u "
 				+ " where c.writer_id = ? and c.post_no = ? and u.id = c.writer_id";
 		// 4. 실행 객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);
