@@ -19,8 +19,8 @@ public class CommentPrint {
 				// 출력 예시: "AAA : 퍼가요~"
 				System.out.println(" " + vo.getWriterNick() + " : " + vo.getContent());
 
-				System.out.print(vo.getCreatedAt() + " / ");
-				System.out.println(vo.getUpdatedAt() + " / ");
+				System.out.print(" (작성일 : " + vo.getCreatedAt() + " /");
+				System.out.println(" 수정일 : " + vo.getUpdatedAt() + ")\n");
 			}
 		}
 		System.out.println("=============================================================");
@@ -31,9 +31,7 @@ public class CommentPrint {
 	public static void print(Comment view) {
 		
 		System.out.println();
-		System.out.println("-------------------");
-		System.out.println("<< 내 댓글 >>");
-		System.out.println("-------------------");
+		System.out.println("<< 나의 댓글 >>");
 		System.out.println("+=================================================+");
 		System.out.println("  " + view.getWriterNick() + " : " + view.getContent());
 		System.out.println("  작성일 : " + view.getCreatedAt());

@@ -16,47 +16,39 @@ public class CommentDAO {
 	ResultSet rs = null;
 	
 	// 1. 댓글 리스트 - 내용, 작성자, 작성일, 수정일
-	public List<Comment> list() throws Exception {
-		
-//		System.out.println("BoardDAO.list() ---------------------------");
-		
-		// 리턴 타입과 동일한 변수 선언 - 결과 저장
+	public List<Comment> list(int postNo) throws Exception {
 		List<Comment> list = new ArrayList<>();
-		
-		// 1. 드라이버 확인 - static으로 선언된 내용이 자동으로 올라간다
-		// & 2. 연결 객체 - 정보를 넣고 서버에 다녀온다
-		// getConnection() - static
 		con = DB.getConnection();
 		
-		// 3. 실행할 쿼리 작성
-		String sql = "select u.nickname, c.content, c.writer_id, c.createdAt, c.updatedAt from comments c, posts p, "
-				+ "users u where c.post_no = p.post_no and u.id = c.writer_id order by no desc";
+		// 1. WHERE절에 c.post_no = ? 추가 (해당 글의 댓글만)
+		// 2. AND 조건으로 테이블 조인 (comments와 users)
+		// 3. ORDER BY c.comment_no DESC (최신 댓글이 위로)
+		String sql = "SELECT u.nickname, c.content, c.writer_id, "
+				   + " to_char(c.created_at, 'yyyy-mm-dd') created_at, "
+				   + " to_char(c.updated_at, 'yyyy-mm-dd') updated_at "
+				   + " FROM comments c, users u "
+				   + " WHERE c.post_no = ? "      // 이 게시글의 댓글만
+				   + " AND c.writer_id = u.id " // 작성자 닉네임 가져오기 위한 조인
+				   + " ORDER BY c.comment_no DESC";
 		
-		// 4. 준비된 실행 객체
 		pstmt = con.prepareStatement(sql);
-
-		// 5. 실행 : select -> rs, insert / update / delete -> Integer
+		pstmt.setInt(1, postNo); // 게시글 번호 세팅
+		
 		rs = pstmt.executeQuery();
 		
-		// 6. DB에서 가져온 데이터 채우기
 		if (rs != null) {
-			while(rs.next()) {  // 데이터가 있는 만큼 반복 실행
-				// 저장할 객체 생성
+			while(rs.next()) {
 				Comment vo = new Comment();
-				// 데이터 저장
 				vo.setWriterNick(rs.getString("nickname"));
-				vo.setCommentNo(rs.getInt("content"));
+				vo.setContent(rs.getString("content"));
 				vo.setWriterId(rs.getString("writer_id"));
 				vo.setCreatedAt(rs.getString("created_at"));
 				vo.setUpdatedAt(rs.getString("updated_at"));
-				// list에 담는다
 				list.add(vo);
-			}  // while문 끝
-		}  // if문 끝
+			}
+		}
 		
-		// 7. DB 닫기
 		DB.close(con, pstmt, rs);
-		
 		return list;
 	}  // list() 끝
 	
@@ -69,7 +61,7 @@ public class CommentDAO {
 		con = DB.getConnection();
 		// 3. SQL 작성
 		String sql = "insert into comments(comment_no, post_no, content, writer_id, created_at) "
-				+ " values(comment_seq.nextval, ?, ?, sysDate)";
+				+ " values(comments_seq.nextval, ?, ?, ?, sysdate)";
 		// 4. 실행 객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, vo.getPostNo());
@@ -118,12 +110,14 @@ public class CommentDAO {
 	
 	// 3. 내 댓글 보기 - 내용, 작성일, 수정일
 	public Comment view(Comment vo) throws Exception {
+		Comment result = null;
 		
 		// 1. 드라이버 확인 & 2. 연결 객체
 		con = DB.getConnection();
 		// 3. SQL
-		String sql = "select u.nickname, c.content, to_char(c.created_at, 'yyyy-mm-dd') c.created_at, to_char(c.updated_at, "
-				+ " 'yyyy-mm-dd') c.updated_at from comments c users u where writerId = ? and post_no = ? and u.id = c.writer_id";
+		String sql = "select u.nickname, c.content, to_char(created_at, 'yyyy-mm-dd') created_at, "
+				+ " to_char(updated_at, 'yyyy-mm-dd') updated_at from comments c, users u "
+				+ " where c.writer_id = ? and c.post_no = ? and u.id = c.writer_id";
 		// 4. 실행 객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, vo.getWriterId());
@@ -134,16 +128,18 @@ public class CommentDAO {
 		if (rs != null) {
 			while(rs.next()) {  // 데이터가 있는 만큼 반복 실행
 				// 저장할 객체 생성
-				vo = new Comment();
-				vo.setWriterNick(rs.getString("nickname"));
-				vo.setContent(rs.getString("content"));
-				vo.setCreatedAt(rs.getString("created_at"));
-				vo.setUpdatedAt(rs.getString("updated_at"));
+				result = new Comment();
+				result.setPostNo(vo.getPostNo());
+				result.setWriterId(vo.getWriterId());
+				result.setWriterNick(rs.getString("nickname"));
+				result.setContent(rs.getString("content"));
+				result.setCreatedAt(rs.getString("created_at"));
+				result.setUpdatedAt(rs.getString("updated_at"));
 			}  // while() 끝
 		}  // if 끝
 		// 7. 닫기
 		DB.close(con, pstmt, rs);
-		return vo;
+		return result;
 	}  // view() 끝
 	
 	
@@ -154,7 +150,7 @@ public class CommentDAO {
 		// 1. 드라이버 확인 & 2. 연결 객체
 		con = DB.getConnection();
 		// 3. SQL 작성
-		String sql = "update comments set content = ?, updated_at = sysDate "
+		String sql = "update comments set content = ?, updated_at = sysdate "
 				+ " where writer_id = ? and post_no = ?";
 		// 4. 실행객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);
