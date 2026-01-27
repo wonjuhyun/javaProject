@@ -15,7 +15,7 @@ public class MemberDAO {
     private ResultSet rs;
 
     // ===================== 로그인 =====================
-    public LoginVO login(MemberVO input) throws Exception {
+    public LoginVO login(LoginVO obj) throws Exception {
 
         LoginVO vo = null;
 
@@ -28,8 +28,8 @@ public class MemberDAO {
                 "where id = ? and pw = ? and active = 'Y'";
 
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, input.getId());
-            pstmt.setString(2, input.getPw());
+            pstmt.setString(1, obj.getId());
+            pstmt.setString(2, obj.getPw());
 
             rs = pstmt.executeQuery();
 
