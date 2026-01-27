@@ -86,23 +86,7 @@ public class BoardDAO {
 
         return vo;
     }
-    //게시글 번호 자동 생성
-    public int getNextPostNo() throws Exception {
-        int nextno = 0;
-        con=DB.getConnection();
-        String sql = "SELECT NVL(MAX(post_no),0) + 1 AS nextNo FROM Posts";
-        pstmt = con.prepareStatement(sql);
-        rs = pstmt.executeQuery();
-        if (rs.next()) {
-            nextno = rs.getInt("nextno");
-        }
-
-        if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
-        if (con != null) con.close();
-
-        return nextno;
-    }
+ 
     //수정
     public Integer update(BoardVO vo) throws Exception {
         Integer result = 0;

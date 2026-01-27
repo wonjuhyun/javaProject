@@ -1,6 +1,6 @@
 package com.blog.board.vo;
 
-import java.sql.Timestamp;
+
 import java.text.SimpleDateFormat;
 
 
