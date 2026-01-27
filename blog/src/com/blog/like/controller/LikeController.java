@@ -7,10 +7,7 @@ import com.blog.like.service.LikeDeleteService;
 import com.blog.like.service.LikeInsertService;
 import com.blog.like.vo.LikeVO;
 import com.blog.main.service.Execute;
-//import com.blog.member.vo.Login;
-
-import a.Login;
-
+import com.blog.member.vo.Login;
 
 public class LikeController {
 
