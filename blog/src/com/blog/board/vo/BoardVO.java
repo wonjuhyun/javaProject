@@ -1,6 +1,7 @@
 package com.blog.board.vo;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 
 
@@ -18,9 +19,9 @@ private String content;          // 내용
 
 private int hit;                 // 조회수
 
-private  Timestamp createdAt; // 작성일
+private  String createdAt; // 작성일     LocalDateTime-> String
 
-private  Timestamp updatedAt; // 수정일     LocalDateTime-> Timestamp  전자는 오류남
+private  String updatedAt; // 수정일     LocalDateTime-> String
 
 public int getPostNo() { // 게시글 번호가져오기
 
@@ -94,26 +95,26 @@ public void setHit(int hit) {//조회수 설정
 
 }
 
-public  Timestamp getCreatedAt() {//작성일 가져오기
+public  String getCreatedAt() {//작성일 가져오기
 
 	return createdAt;
 
 }
 
-public void setCreatedAt(Timestamp createdAt) { //작성일 설정
-
+public void setCreatedAt(String createdAt) { //작성일 설정
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	this.createdAt = createdAt;
 
 }
 
-public  Timestamp getUpdatedAt() {//수정일 가져오기
+public  String getUpdatedAt() {//수정일 가져오기
 
 	return updatedAt;
 
 }
 
-public void setUpdatedAt(Timestamp updatedAt) { //수정일 설정
-
+public void setUpdatedAt(String updatedAt) { //수정일 설정
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	this.updatedAt = updatedAt;
 
 	}

@@ -1,12 +1,12 @@
 package com.blog.board.DAO;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.blog.board.vo.BoardVO;
+import com.blog.util.db.DB;
 
 
 public class BoardDAO {
@@ -22,10 +22,8 @@ public class BoardDAO {
     // 게시글 목록 조회
     public List<BoardVO> list() throws Exception {
         List<BoardVO> list = new ArrayList<>();
-        Class.forName(DRIVER);
-        con = DriverManager.getConnection(URL, UID, UPW);
-
-        String sql = "SELECT post_no, writer_id, title, content, hit, created_at, updated_at FROM Posts";
+        con=DB.getConnection();
+        String sql = "SELECT post_no, writer_id, title, content, hit, cate_no, created_at, updated_at FROM Posts";
         pstmt = con.prepareStatement(sql);
         rs = pstmt.executeQuery();
 
@@ -36,8 +34,9 @@ public class BoardDAO {
             vo.setTitle(rs.getString("title"));
             vo.setContent(rs.getString("content"));
             vo.setHit(rs.getInt("hit"));
-            vo.setCreatedAt(rs.getTimestamp("created_at"));
-            vo.setUpdatedAt(rs.getTimestamp("updated_at"));
+            vo.setCateNo(rs.getInt("cate_no"));
+            vo.setCreatedAt(rs.getString("created_at"));
+            vo.setUpdatedAt(rs.getString("updated_at"));
             list.add(vo);
         }
 
@@ -50,28 +49,21 @@ public class BoardDAO {
 
     // 조회수 증가
     public Integer inc(Integer no) throws Exception {
-        Class.forName(DRIVER);
-        con = DriverManager.getConnection(URL, UID, UPW);
-
+    		con=DB.getConnection();
         String sql = "UPDATE Posts SET hit = hit + 1 WHERE post_no = ?";
         pstmt = con.prepareStatement(sql);
         pstmt.setInt(1, no);
-
         int result = pstmt.executeUpdate();
-
         if (pstmt != null) pstmt.close();
         if (con != null) con.close();
-
         return result;
     }
 
     // 단일 게시글 조회
     public BoardVO view(int no) throws Exception {
         BoardVO vo = null;
-        Class.forName(DRIVER);
-        con = DriverManager.getConnection(URL, UID, UPW);
-
-        String sql = "SELECT post_no, writer_id, title, content, hit, created_at, updated_at FROM Posts WHERE post_no = ?";
+        con=DB.getConnection();
+        String sql = "SELECT post_no, writer_id, title, content, hit, cate_no ,created_at, updated_at FROM Posts WHERE post_no = ?";
         pstmt = con.prepareStatement(sql);
         pstmt.setInt(1, no);
         rs = pstmt.executeQuery();
@@ -83,8 +75,9 @@ public class BoardDAO {
             vo.setTitle(rs.getString("title"));
             vo.setContent(rs.getString("content"));
             vo.setHit(rs.getInt("hit"));
-            vo.setCreatedAt(rs.getTimestamp("created_at"));
-            vo.setUpdatedAt(rs.getTimestamp("updated_at"));
+            vo.setCateNo(rs.getInt("cate_no"));
+            vo.setCreatedAt(rs.getString("created_at"));
+            vo.setUpdatedAt(rs.getString("updated_at"));
         }
 
         if (rs != null) rs.close();
@@ -92,24 +85,55 @@ public class BoardDAO {
         if (con != null) con.close();
 
         return vo;
-    }//게시글 번호 자동 생성 메서드
+    }
+    //게시글 번호 자동 생성
     public int getNextPostNo() throws Exception {
-        int nextNo = 0;
-        Class.forName(DRIVER);
-        con = DriverManager.getConnection(URL, UID, UPW);
-
+        int nextno = 0;
+        con=DB.getConnection();
         String sql = "SELECT NVL(MAX(post_no),0) + 1 AS nextNo FROM Posts";
         pstmt = con.prepareStatement(sql);
         rs = pstmt.executeQuery();
- 
         if (rs.next()) {
-            nextNo = rs.getInt("nextNo");
+            nextno = rs.getInt("nextno");
         }
 
         if (rs != null) rs.close();
         if (pstmt != null) pstmt.close();
         if (con != null) con.close();
 
-        return nextNo;
+        return nextno;
+    }
+    //수정
+    public Integer update(BoardVO vo) throws Exception {
+        Integer result = 0;
+        con=DB.getConnection();
+        String sql = "update Posts set title = ?, content = ?,cate_no = ? WHERE post_no = ?";
+        pstmt = con.prepareStatement(sql);
+	    	pstmt.setString(1,vo.getTitle());
+	    	pstmt.setString(2,vo.getContent());
+	    pstmt.setInt(3,vo.getCateNo());
+	    pstmt.setInt(4,vo.getPostNo());
+        result = pstmt.executeUpdate();
+        if (rs != null) rs.close();
+        if (pstmt != null) pstmt.close();
+        if (con != null) con.close();
+        return result;
+    }
+    //삭제
+    public Integer delete(BoardVO vo) throws Exception {
+        Integer result = 0;
+        con=DB.getConnection();
+        String sql = "DELETE FROM Posts WHERE post_no = ?";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setInt(1, vo.getPostNo()); 
+
+        result = pstmt.executeUpdate();
+
+        if (pstmt != null) pstmt.close();
+        if (con != null) con.close();
+
+        return result;
+
+
     }
 }

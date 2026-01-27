@@ -13,7 +13,7 @@ public class BoardViewService implements Service {
 		BoardDAO dao = new BoardDAO();
 		if(inc == 1) {
 		Integer result =  dao.inc(no);
-		if(result != 1 )throw new Exception("");
+		if(result != 1 )throw new Exception("게시글 조회실패");
 		}
 		return dao.view(no);
 	}
