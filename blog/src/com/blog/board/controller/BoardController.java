@@ -116,7 +116,7 @@ public static Integer view (BoardVO vo) {
     		
     		break;
     	case "2":
-    		System.out.println("댓글쓰기를 누르셨습니다.");
+    		System.out.println("댓글를 누르셨습니다.");
     		//댓글로 이동
     		break;
     	case "3":
