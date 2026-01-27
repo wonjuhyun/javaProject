@@ -169,7 +169,7 @@ public class CommentController {
 				case "0" :
 					return;
 				default :
-					Main.invalidMenuPrint();
+//					Main.invalidMenuPrint();
 				}  // switch 끝
 				System.out.println();  // 화면을 구분하는 빈 줄 출력
 			}  // try 정상처리 끝
