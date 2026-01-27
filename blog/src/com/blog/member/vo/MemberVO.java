@@ -1,5 +1,6 @@
 package com.blog.member.vo;
 
+
 public class MemberVO {
 	private String id;
 	private String pw; // 현재 비밀번호
@@ -9,11 +10,6 @@ public class MemberVO {
 	private String birth;
 	private String tel;
 	private String email;
-	private String regDate;
-	private String conDate;
-	private String status;
-	private Integer gradeNo;
-	private String gradeName;
 	public String getId() {
 		return id;
 	}
@@ -62,41 +58,12 @@ public class MemberVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getRegDate() {
-		return regDate;
-	}
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-	public String getConDate() {
-		return conDate;
-	}
-	public void setConDate(String conDate) {
-		this.conDate = conDate;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public Integer getGradeNo() {
-		return gradeNo;
-	}
-	public void setGradeNo(Integer gradeNo) {
-		this.gradeNo = gradeNo;
-	}
-	public String getGradeName() {
-		return gradeName;
-	}
-	public void setGradeName(String gradeName) {
-		this.gradeName = gradeName;
-	}
+	
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", pw=" + pw + ", newPw=" + newPw + ", name=" + name + ", gender=" + gender
-				+ ", birth=" + birth + ", tel=" + tel + ", email=" + email + ", regDate=" + regDate + ", conDate="
-				+ conDate + ", status=" + status + ", gradeNo=" + gradeNo + ", gradeName=" + gradeName + "]";
+				+ ", birth=" + birth + ", tel=" + tel + ", email=" + email + ", regDate=" +  ", conDate="
+				 + ", status=" + ", gradeNo=" +  ", gradeName=" + "]";
 	}
 	
 }
