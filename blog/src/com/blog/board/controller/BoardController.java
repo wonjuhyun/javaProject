@@ -8,7 +8,12 @@ import com.blog.board.service.BoardUpdateService;
 import com.blog.board.service.BoardViewService;
 import com.blog.board.vo.BoardVO;
 import com.blog.board.vo.CurrentBoard;
+import com.blog.comment.controller.CommentController;
+import com.blog.like.controller.LikeController;
+import com.blog.like.dao.LikeDAO;
+import com.blog.like.vo.LikeVO;
 import com.blog.main.service.Execute;
+import com.blog.member.vo.Login;
 import com.blog.util.io.BoardPrint;
 import com.blog.util.io.In;
 
@@ -104,40 +109,62 @@ public class BoardController {
         }
       
     }
-public static Integer view (BoardVO vo) {
-      while(true) {
-    	System.out.println("========= 게시글 보기 =========");
-    	System.out.println("제목:"+vo.getTitle());
-    	System.out.println("내용:"+vo.getContent());
-        System.out.println("===================================================");
-        System.out.println("1. 공감 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
-        System.out.println("===================================================");
-        System.out.println("번호를 입력해주세요. >>>");
-        String menu = In.getStr("선택");
-        switch (menu) {
-    	case "1":
-    		System.out.println("공감을 누르셨습니다.");
-    		//공감으로 이동
-    		
-    		break;
-    	case "2":
-    		System.out.println("댓글를 누르셨습니다.");
-    		//댓글로 이동
-    		break;
-    	case "3":
-    		System.out.println("구독한 블로그 확인을 누르셨습니다.");
-    		//구독으로 이동
-    		break;
-    	case "0":
-    		System.out.println("나가기");
-    		return 0;
-    	default:
-            System.out.println("잘못된 선택입니다.");
+	@SuppressWarnings("null")
+	public static Integer view(BoardVO vo) throws Exception {
+	    while (true) {
+	        System.out.println("========= 게시글 보기 =========");
+	        System.out.println("제목:" + vo.getTitle());
+	        System.out.println("내용:" + vo.getContent());
 
-        
-        	}
-      }
-   }
+	        // VO 객체에 현재 글번호와 로그인한 사용자 ID 담기
+	        LikeVO likeVO = new LikeVO();
+	        likeVO.setPostNo(vo.getPostNo());
+	        likeVO.setLikerId(Login.getId()); // 로그인한 사용자 ID 가져오기
+	        LikeDAO likeDao = new LikeDAO();
+
+	        System.out.println("===================================================");
+	        if (!likeDao.isLiked(likeVO)) {
+	            System.out.println("1. 공감하기 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
+	        } else {
+	            System.out.println("1. 공감취소 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
+	        }
+	        System.out.println("===================================================");
+
+	        System.out.println("번호를 입력해주세요. >>>");
+	        String menu = In.getStr("선택");
+
+	        switch (menu) {
+	            case "1":
+	                // 공감 기능 실행을 LikeController에 위임
+	                LikeController likeController = new LikeController();
+	                likeController.execute();
+
+	                // 총 공감 수 표시
+	                long count = likeDao.count(vo.getPostNo());
+	                System.out.println("현재 공감 수: " + count);
+	                break;
+
+	            case "2":
+	                System.out.println("댓글 쓰기 기능으로 이동");
+	                // CommentController 호출 예정
+	                CommentController CommentController =new CommentController();
+	                CommentController.execute();
+	                break;
+
+	            case "3":
+	                System.out.println("구독한 블로그 확인 기능으로 이동");
+	                // SubscribeController 호출 예정
+	                break;
+
+	            case "0":
+	                System.out.println("나가기");
+	                return 0;
+
+	            default:
+	                System.out.println("잘못된 선택입니다.");
+	        }
+	    }
+	}
       public Integer update (BoardVO vo) {
           while(true) {
         	System.out.println("======================= 게시글 수정 =======================");
