@@ -7,6 +7,7 @@ import com.blog.board.service.BoardListService;
 import com.blog.board.service.BoardUpdateService;
 import com.blog.board.service.BoardViewService;
 import com.blog.board.vo.BoardVO;
+import com.blog.board.vo.CurrentBoard;
 import com.blog.main.service.Execute;
 import com.blog.util.io.BoardPrint;
 import com.blog.util.io.In;
@@ -38,8 +39,11 @@ public class BoardController {
                 	 	System.out.println("게시글 글보기");
                      no = In.getInt("글번호");
                      BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
+                     CurrentBoard.setBoardVO(vo);
                      BoardPrint.print(vo);
                      view(vo); 
+                     CurrentBoard.setBoardVO(null);
+                    
                      break;
 
 
