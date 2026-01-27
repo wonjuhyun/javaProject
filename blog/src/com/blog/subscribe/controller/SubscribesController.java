@@ -15,7 +15,7 @@ public class SubscribesController {
 
     private Scanner scanner = new Scanner(System.in);
 
-    // 메인에서 "5"번 선택 시 실행되는 입구
+    // 메인에서 "5"번 선택 시 실행
     public void execute(String loginId) {
         while (true) {
             System.out.println("\n===================================");
@@ -54,7 +54,7 @@ public class SubscribesController {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("목록을 불러오는 중 오류가 발생했습니다.");
+                System.out.println("오류가 발생했습니다.");
             }
 
             System.out.println("===================================");
@@ -131,7 +131,6 @@ public class SubscribesController {
         System.out.println("===================================");
         System.out.println("0. 돌아가기");
         while(!scanner.nextLine().equals("0")) {
-            System.out.println("0을 입력하면 돌아갑니다.");
         }
     }
 }
