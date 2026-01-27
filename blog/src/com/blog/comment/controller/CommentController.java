@@ -8,10 +8,13 @@ import com.blog.comment.service.CommentUpdateService;
 import com.blog.comment.service.CommentViewService;
 import com.blog.comment.service.CommentWriteService;
 import com.blog.comment.vo.Comment;
+import com.blog.main.controller.Main;
 import com.blog.main.service.Execute;
 import com.blog.member.vo.Login;
 import com.blog.util.io.CommentPrint;
 import com.blog.util.io.In;
+
+import a.Post;
 
 
 public class CommentController {
@@ -25,10 +28,11 @@ public class CommentController {
 				// 일반 게시판 처리
 				// 1. 메뉴 출력 - 일반 게시판이 가지고 있는 기능
 				System.out.println();
-				System.out.println("<<< 댓글 >>>");
-				System.out.println("==============================================");
-				System.out.println(" 1. 댓글 리스트  2. 댓글 작성  3. 내 댓글  0. 이전");
-				System.out.println("==============================================");
+				System.out.println("<< 댓글 >>");
+				System.out.println("=============================================");
+				System.out.println(" 1. 댓글 리스트  2. 댓글 작성  3. 나의 댓글");
+				System.out.println(" 4. 댓글 수정  5. 댓글 삭제  0. 이전");
+				System.out.println("=============================================");
 				
 				// 2. 메뉴 입력
 				String menu = In.getStr("메뉴 입력");
@@ -38,70 +42,105 @@ public class CommentController {
 				// 사용 변수 선언
 				Comment vo;
 				Integer result;
-				long no;
-				Long[] arrs;
+				
 				switch (menu) {
+				
+				// 댓글 리스트
 				case "1" :
-//					System.out.println("댓글 리스트 처리");
 					@SuppressWarnings("unchecked")
 					List<Comment> list = (List<Comment>) Execute.execute(new CommentListService(), null); 
 					CommentPrint.print(list);
 					break;
+					
+				// 댓글 작성
 				case "2" :
-//					System.out.println("댓글 작성 처리");
-					vo = new Comment();
-					vo.setPostNo(Post.getPostNO());
-					vo.setWriterId(Login.getId());
-					vo.setContent(In.getStr("댓글 입력"));
-					result = (Integer) Execute.execute(new CommentWriteService(), vo);
+					System.out.println("============================================");
+					String content = In.getStr("댓글 입력");
+					System.out.println("--------------------------------------------");
+					System.out.println(" 1. 작성완료  0. 작성취소");
+					String sel = In.getStr("메뉴 입력");
+					System.out.println("============================================");
+					
+					if(sel.equals("1")) {
+						vo = new Comment();
+						vo.setPostNo(Post.getPostNo()); // 메서드명 확인 (getPostNo)
+						vo.setWriterId(Login.getId());
+						vo.setContent(content);
+						
+						result = (Integer) Execute.execute(new CommentWriteService(), vo);
+						if(result == 1) System.out.println("\n ***** 댓글이 등록되었습니다. *****");
+					} else {
+						System.out.println("\n ***** 작성이 취소되었습니다. *****");
+					}
 					break;
+					
+				// 내 댓글 보기
 				case "3" :
-					// 2. 조회할 데이터 세팅 (게시글 번호 + 로그인된 내 아이디)
+					// [나의 댓글]
 					vo = new Comment();
 					vo.setPostNo(Post.getPostNo());
-					vo.setWriterId(Login.getId()); // 로그인 정보 자동 입력
-					// 1. 로그인 여부 확인 (Main.login에 로그인 정보가 있다고 가정)
-					// if (Main.login == null) { System.out.println("로그인이 필요합니다."); break; }
+					vo.setWriterId(Login.getId());
 					
-					// 5. 출력
-					CommentPrint.print(vo);
+					// DB에서 내 댓글 가져오기
+					Comment myComment = (Comment) Execute.execute(new CommentViewService(), vo);
 					
+					if (myComment != null) {
+						CommentPrint.print(myComment);
+					} else {
+						System.out.println("\n ***** 작성하신 댓글이 없습니다. *****");
+					}
 					break;
+					
+				// 댓글 수정
 				case "4" :
 					
+					// [댓글 수정]
+					vo = new Comment();
+					vo.setPostNo(Post.getPostNo());
+					vo.setWriterId(Login.getId());
+					
+					// 1. 수정할 내 댓글이 있는지 먼저 확인
 					Comment checkVO = (Comment) Execute.execute(new CommentViewService(), vo);
 					
 					if (checkVO != null) {
-						CommentPrint.print(checkVO);
+						// 2. 현재 내용 보여주기 (제목을 '댓글 수정'으로 보이게 하려면 print 메서드 수정 필요하지만 여기선 재활용)
+						System.out.println("<< 댓글 수정 >>"); 
+						System.out.println("============================================");
+						System.out.println(" " + checkVO.getWriterNick() + " : " + checkVO.getContent());
+						System.out.println("--------------------------------------------");
 						
-						// 내용 수정 입력 (내부에서 checkVO 내용이 바뀜)
+						// 3. 내용 수정 입력 (메서드 호출)
 						update(checkVO);
 						
-						// [수정] 실제로 DB에 업데이트하는 코드 추가
+						// 4. DB 업데이트 실행
 						result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
 						
-						if (result >= 1) System.out.println("***** 수정이 완료되었습니다. *****");
-						else System.out.println("***** 수정 실패 *****");
+						if (result >= 1) System.out.println("\n ***** 수정이 완료되었습니다. *****");
+						else System.out.println("\n ***** 수정 실패 *****");
 						
 					} else {
-						System.out.println("***** 이 게시글에 작성하신 댓글이 없습니다. *****");
+						System.out.println("\n ***** 이 게시글에 작성하신 댓글이 없습니다. *****");
 					}
 					break;
+					
+				// 댓글 삭제
 				case "5" :
-					System.out.println("댓글 삭제 처리");
-					// 글번호와 비밀번호 받기 - vo
+					
+					System.out.println("<< 댓글 삭제 >>");
 					vo = new Comment();
 					vo.setPostNo(Post.getPostNo());
 					vo.setWriterId(Login.getId());
+					
 					result = (Integer) Execute.execute(new CommentDeleteService(), vo);
-					if (result >= 1) System.out.println("***** 삭제가 완료되었습니다. *****");
-					else System.out.println("***** 삭제가 되지 않았습니다. 정보를 다시 확인해 주세요. *****");
+					if (result >= 1) System.out.println("\n ***** 삭제가 완료되었습니다. *****");
+					else System.out.println("\n ***** 삭제할 댓글이 없습니다. *****");
 					break;
+				
+				// 이전
 				case "0" :
-					// 자신을 호출한 프로그램으로 돌아간. Main.main()
 					return;
 				default :
-//					Main.invalidMenuPrint();
+					Main.invalidMenuPrint();
 				}  // switch 끝
 				System.out.println();  // 화면을 구분하는 빈 줄 출력
 			}  // try 정상처리 끝
