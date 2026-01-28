@@ -6,7 +6,7 @@ import com.blog.board.DAO.BoardDAO;
 import com.blog.board.vo.BoardVO;
 import com.blog.main.service.Service;
 
-public class BoardlistCategory implements Service{
+public class BoardlistByCategory implements Service{
 
 	@Override
 	public Object service(Object obj) throws Exception {

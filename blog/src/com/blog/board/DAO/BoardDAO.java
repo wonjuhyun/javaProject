@@ -114,10 +114,10 @@ public class BoardDAO {
     }
     //카테고리로 조회
  // 카테고리별 게시글 조회
-    public List<BoardVO> listCategory(int cateNo) throws Exception {
+    public List<BoardVO> listByCategory(int cateNo) throws Exception {
         List<BoardVO> list = new ArrayList<>();
         con = DB.getConnection();
-        String sql = "SELECT post_no, writer_id, title, content, hit, cate_no, created_at, updated_at FROM Posts WHERE cate_no = ?";
+        String sql = "SELECT post_no, writer_id, title, content, hit, cate_no, created_at, updated_at FROM Posts WHERE cate_no = ? order by post_no desc";
         pstmt = con.prepareStatement(sql);
         pstmt.setInt(1, cateNo);
         rs = pstmt.executeQuery();
