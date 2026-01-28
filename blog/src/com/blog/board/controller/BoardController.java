@@ -2,6 +2,7 @@ package com.blog.board.controller;
 
 import java.util.List;
 
+import com.blog.board.DAO.BoardDAO;
 import com.blog.board.service.BoardDeleteService;
 import com.blog.board.service.BoardListService;
 import com.blog.board.service.BoardUpdateService;
@@ -67,14 +68,14 @@ public class BoardController {
                     }
                     break;
 
-                case "4":// 게시글 글수정
+                case "4": // 게시글 글수정
                     no = In.getInt("글번호");
                     vo = new BoardVO();
                     vo.setPostNo(no);
                     vo.setTitle(In.getStr("제목"));
                     vo.setContent(In.getStr("내용"));
                     vo.setCateNo(In.getInt("카테고리"));
-                   
+
                     result = (Integer) Execute.execute(new BoardUpdateService(), vo);
 
                     if (result == 0) {
@@ -82,10 +83,17 @@ public class BoardController {
                     } else if (result == 8) {
                         System.out.println("수정이 취소되었습니다.");
                     } else {
-                        BoardPrint.print(vo);
+                        // 수정 후 DB에서 최신 데이터 다시 조회
+                    		BoardDAO dao = new BoardDAO();
+                        BoardVO updatedVo = dao.view(vo.getPostNo());
+
+                        //최신 데이터 출력
+                        BoardPrint.print(updatedVo);
+
                         System.out.println("수정이 완료되었습니다.");
                     }
                     break;
+                       
                        
                 case "5":// 게시글 글삭제
                     no = In.getInt("글번호 입력");

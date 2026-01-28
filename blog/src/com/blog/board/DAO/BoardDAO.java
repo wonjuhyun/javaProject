@@ -120,8 +120,8 @@ public class BoardDAO {
         Integer result = 0;
         con = DB.getConnection();
 
-        String sql = "INSERT INTO Posts (post_no, title, content, writer_id, cate_no) "
-                   + "VALUES (Posts_seq.nextval, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Posts (post_no, title, content, writer_id, cate_no,created_at, updated_at) "
+                   + "VALUES (Posts_seq.nextval, ?, ?, ?, ? , sysdate, null)";
         pstmt = con.prepareStatement(sql);
 
         pstmt.setString(1, vo.getTitle());
@@ -138,14 +138,13 @@ public class BoardDAO {
     public Integer update(BoardVO vo) throws Exception {
         con = DB.getConnection();
         String sql = "UPDATE Posts "
-                   + "SET title = ?, content = ?, cate_no = ?  writer_id = ?"
-                   + "WHERE post_no = ?";
-        pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, vo.getTitle());
-        pstmt.setString(2, vo.getContent());
-        pstmt.setInt(3, vo.getCateNo());
-        pstmt.setString(4, vo.getWriterId());        
-        pstmt.setInt(5, vo.getPostNo());
+                + "SET title = ?, content = ?, cate_no = ?, updated_at = SYSDATE "
+                + "WHERE post_no = ?";
+	     pstmt = con.prepareStatement(sql);
+	     pstmt.setString(1, vo.getTitle());
+	     pstmt.setString(2, vo.getContent());
+	     pstmt.setInt(3, vo.getCateNo());
+	     pstmt.setInt(4, vo.getPostNo());
         int result = pstmt.executeUpdate();
         DB.close(con, pstmt);
         return result;
