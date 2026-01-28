@@ -20,6 +20,7 @@ import com.blog.util.io.BoardPrint;
 import com.blog.util.io.In;
 
 public class BoardController {
+   
    @SuppressWarnings({ "unchecked" })
    public void execute() throws Exception {
         while (true) {
@@ -136,9 +137,9 @@ public class BoardController {
            System.out.println("===================================================");
         // 공감 여부에 따라 메뉴 출력
            if (!likeDao.isLiked(likeVO)) {
-               System.out.println("1. 공감하기 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
+               System.out.println("1. 공감하기 2. 댓글 3. 구독한 블로그확인  0. 나가기");
            } else {
-               System.out.println("1. 공감취소 2. 댓글쓰기 3. 구독한 블로그확인  0. 나가기");
+               System.out.println("1. 공감취소 2. 댓글 3. 구독한 블로그확인  0. 나가기");
            }
            System.out.println("===================================================");
 
