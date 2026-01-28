@@ -1,20 +1,26 @@
 package com.blog.category.service;
 
-// 게시글 서비스 (연결용)
-public class PostService {
+import java.util.List;
 
-    // 카테고리별 게시글 조회
-    public void showPostListByCategory(int cateNo) {
+import com.blog.board.service.BoardlistCategory;
+import com.blog.board.vo.BoardVO;
+import com.blog.main.service.Execute;
+import com.blog.main.service.Service;
 
-        System.out.println();
-        System.out.println("========================================");
-        System.out.println("카테고리 번호 [" + cateNo + "] 게시글 목록");
-        System.out.println("========================================");
+// 카테고리에서 "카테고리별 게시글 목록"을 가져오기 위한 서비스 래퍼
+public class PostService implements Service {
 
-        // 실제 게시글 출력은 게시글 담당자가 구현
-        System.out.println("(게시글 리스트 출력 영역)");
-        System.out.println("(PostService에서 구현 예정)");
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<BoardVO> service(Object obj) throws Exception {
+        Integer cateNo = (Integer) obj;
 
-        System.out.println("========================================");
+        // 게시글 쪽 카테고리 목록 서비스 호출
+        return (List<BoardVO>) Execute.execute(new BoardlistCategory(), cateNo);
+    }
+
+    // 화면 코드에서 편하게 쓰기 위한 헬퍼 메소드
+    public List<BoardVO> getPostsByCategory(int cateNo) throws Exception {
+        return service(cateNo);
     }
 }
