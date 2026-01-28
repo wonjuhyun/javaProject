@@ -114,6 +114,24 @@ public class BoardDAO {
         DB.close(con, pstmt, rs);
         return vo;
     }
+    //등록
+    public Integer write(BoardVO vo) throws Exception {
+        Integer result = 0;
+        con = DB.getConnection();
+
+        String sql = "INSERT INTO Posts (post_no, title, content, writer_id, cate_no) "
+                   + "VALUES (Posts_seq.nextval, ?, ?, ?, ?)";
+        pstmt = con.prepareStatement(sql);
+
+        pstmt.setString(1, vo.getTitle());
+        pstmt.setString(2, vo.getContent());
+        pstmt.setString(3, vo.getWriterId());
+        pstmt.setInt(4, vo.getCateNo());
+
+        result = pstmt.executeUpdate();
+        DB.close(con, pstmt);
+        return result;
+    }
 
     // 수정
     public Integer update(BoardVO vo) throws Exception {

@@ -6,6 +6,7 @@ import com.blog.board.service.BoardDeleteService;
 import com.blog.board.service.BoardListService;
 import com.blog.board.service.BoardUpdateService;
 import com.blog.board.service.BoardViewService;
+import com.blog.board.service.BoardWriteService;
 import com.blog.board.vo.BoardVO;
 import com.blog.board.vo.CurrentBoard;
 import com.blog.comment.controller.CommentController;
@@ -27,23 +28,23 @@ public class BoardController {
             System.out.println("========= 게시글 메뉴 =========");
             System.out.println("============================");
             System.out.println("1. 게시글 리스트 2. 게시글 글보기");
-            System.out.println("3. 게시글 글수정 4. 게시글 글삭제");
-            System.out.println("0. 나가기");
+            System.out.println("3. 게시글 글등록  4. 게시글 글수정");
+            System.out.println("5. 게시글 글삭제   0. 나가기");
             System.out.println("============================");
             System.out.println("번호를 입력해주세요. >>>");
             String menu = In.getStr();// 사용자 입력
             int no;
+            Integer result;
             System.out.println();
             switch (menu) {
                 case "1":
-                    System.out.println("게시글 리스트");
+                   // System.out.println("게시글 리스트");
                     List<BoardVO> list = (List<BoardVO>) Execute.execute(new BoardListService(), null);
                     BoardPrint.print(list);
-
                     break;
                    
                 case "2":// 게시글 글보기
-                       System.out.println("게시글 글보기");
+                     //  System.out.println("게시글 글보기");
                      no = In.getInt("글번호");
                      BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
                      CurrentBoard.setBoardVO(vo);// 현재 글 저장
@@ -51,10 +52,24 @@ public class BoardController {
                      view(vo);// 상세 보기 실행
                      CurrentBoard.setBoardVO(null);// 초기화
                      break;
+                
+                case "3": // 게시글 글작성
+                    vo = new BoardVO();
+                    vo.setTitle(In.getStr("제목"));
+                    vo.setContent(In.getStr("내용"));
+                    vo.setWriterId(Login.getId()); // 로그인 사용자 ID 자동 세팅
+                    vo.setCateNo(In.getInt("카테고리"));
+                    result = (Integer) Execute.execute(new BoardWriteService(), vo);
 
+                    if (result > 0) {
+                        System.out.println("게시글이 성공적으로 등록되었습니다.");
+                    } else {
+                        System.out.println("게시글 등록에 실패했습니다.");
+                    }
+                    break;
 
-                case "3":// 게시글 글수정
-                    System.out.println("게시글 글수정");
+                case "4":// 게시글 글수정
+                    //System.out.println("게시글 글수정");
                     no = In.getInt("글번호");
                     vo = new BoardVO();
                     vo.setPostNo(no);
@@ -62,7 +77,7 @@ public class BoardController {
                     vo.setContent(In.getStr("내용"));
                     vo.setCateNo(In.getInt("카테고리"));
                    
-                    Integer result = (Integer) Execute.execute(new BoardUpdateService(), vo);
+                    result = (Integer) Execute.execute(new BoardUpdateService(), vo);
 
                     if (result == 0) {
                         System.out.println("수정할 글이 없습니다.");
@@ -74,8 +89,8 @@ public class BoardController {
                     }
                     break;
                        
-                case "4":// 게시글 글삭제
-                    System.out.println("게시글 글삭제");
+                case "5":// 게시글 글삭제
+                  //  System.out.println("게시글 글삭제");
                     no = In.getInt("글번호 입력");
 
                     vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 0}); // 조회만
@@ -86,8 +101,8 @@ public class BoardController {
                     Integer cho = delete(vo);
 
                     if (cho == 1) {// 삭제 여부 확인
-                        Integer result1 = (Integer) Execute.execute(new BoardDeleteService(), vo);
-                        if (result1 == 0) {
+                        result = (Integer) Execute.execute(new BoardDeleteService(), vo);
+                        if (result == 0) {
                             System.out.println("삭제할 글이 존재하지 않습니다.");
                         } else {
                             System.out.println("삭제되었습니다");
