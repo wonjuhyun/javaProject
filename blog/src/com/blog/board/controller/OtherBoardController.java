@@ -56,24 +56,17 @@ public class OtherBoardController {
                     BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
 
                     if (vo == null) {
-                        System.out.println("해당 번호의 글이 없습니다.");
-                    } else if (!vo.getWriterId().equals(targetId)) {
-                        // (선택사항) 검색한 사람의 글이 아닌 경우 방지
-                        System.out.println("해당 글은 '" + targetId + "'님의 글이 아닙니다.");
+                        System.out.println("***** 해당 번호의 글이 없습니다. *****");
+                    } else if (!targetId.equals(vo.getWriterId())) { 
+                        System.out.println("***** 해당 글은 '" + targetId + "'님의 글이 아닙니다. *****");
                     } else {
                         // 현재 보고 있는 글 정보를 CurrentBoard에 저장
                         CurrentBoard.setBoardVO(vo);
-
-                        // 5. 출력 및 상세 메뉴 실행
                         BoardPrint.print(vo);
-                        
-                        // 기존 BoardController에 있는 상세 메뉴(공감, 댓글 등)를 그대로 재사용!
                         BoardController.view(vo); 
-                        
                         // 다 보고 나오면 초기화
                         CurrentBoard.setBoardVO(null);
                     }
-
                 } else if (menu.equals("0")) {
                     break; // 내부 반복문 탈출 -> 다시 아이디 입력 받으러 감
                 } else {
