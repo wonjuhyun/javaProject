@@ -14,10 +14,6 @@ import com.blog.member.vo.Login;
 import com.blog.util.io.CommentPrint;
 import com.blog.util.io.In;
 
-//import a.Login;
-//import a.Post;
-
-
 public class CommentController {
 
 	public void execute() {

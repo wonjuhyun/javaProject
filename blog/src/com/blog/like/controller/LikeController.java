@@ -25,12 +25,11 @@ public class LikeController {
 		
 		if(isLiked) {
 			Execute.execute(new LikeDeleteService(), vo);
-			System.out.println("*** '" + id + "'님의 게시글에 공감을 취소하셨습니다. ***");
+			System.out.println("\n*** '" + id + "'님의 게시글에 공감을 취소하셨습니다. ***");
 		} else {
 			Execute.execute(new LikeInsertService(), vo);
-			System.out.println("*** '" + id + "'님의 게시글에 공감을 누르셨습니다. ***");
+			System.out.println("\n*** '" + id + "'님의 게시글에 공감을 누르셨습니다. ***");
 		}
-		System.out.println(" 공감 수 : " + postNo);
 
 	}
 	
