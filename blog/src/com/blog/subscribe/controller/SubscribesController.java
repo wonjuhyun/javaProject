@@ -59,7 +59,7 @@ public class SubscribesController {
             }
 
             System.out.println("===================================");
-            System.out.println("1. 구독하기  2. 구독 취소하기  3. 돌아가기");
+            System.out.println("1. 구독하기  2. 구독 취소하기  0. 돌아가기");
             System.out.print("메뉴 선택 > ");
             String subMenu = scanner.nextLine();
 
@@ -67,7 +67,7 @@ public class SubscribesController {
                 doAction(loginId, "insert"); // 구독하기 실행
             } else if (subMenu.equals("2")) {
                 doAction(loginId, "delete"); // 구독 취소 실행
-            } else if (subMenu.equals("3")) {
+            } else if (subMenu.equals("0")) {
                 break; // <구독> 메뉴로 이동
             } else {
                 System.out.println("다시 한 번 확인해주세요.");
