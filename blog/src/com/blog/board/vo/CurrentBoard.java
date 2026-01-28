@@ -22,7 +22,7 @@ public class CurrentBoard {
 
     // 게시글 번호를 바로 가져오는 메서드
     public static int getPostNo() {
-        if (!isSet()) return 0; // 혹은 예외처리
+        if (!isSet()) return 0; 
         return currentBoard.getPostNo();
     }
 
@@ -38,7 +38,7 @@ public class CurrentBoard {
         return currentBoard.getWriterId();
     }
 
-    // 현재 보고 있는 게시글 정보를 간단히 출력하는 메서드 (Login.loginPrint 참고)
+    // 현재 보고 있는 게시글 정보를 간단히 출력하는 메서드 
     public static void printCurrentBoardInfo() {
         System.out.println("+--------------------------------------+");
         if(isSet()) {

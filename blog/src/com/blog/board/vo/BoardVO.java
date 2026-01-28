@@ -1,10 +1,6 @@
 package com.blog.board.vo;
 
 
-import java.text.SimpleDateFormat;
-
-
-
 public class BoardVO {
 
 private int postNo;              // 게시글 번호 (PK)
