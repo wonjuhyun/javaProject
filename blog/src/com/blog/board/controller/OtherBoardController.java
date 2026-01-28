@@ -51,21 +51,25 @@ public class OtherBoardController {
                 	System.out.println();
                     int no = In.getInt("글 번호");
 
-                    // 4. 글 상세 정보 가져오기 (기존 서비스 재사용)
-                    // 조회수 증가(1) 포함
-                    BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
+                    // ★ 여기에 try-catch가 반드시 있어야 Main까지 에러가 안 날아갑니다!
+                    try {
+                        // 1. 서비스 실행 (여기서 에러가 나면 바로 catch로 점프함)
+                        BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
 
-                    if (vo == null) {
-                        System.out.println("***** 해당 번호의 글이 없습니다. *****");
-                    } else if (!targetId.equals(vo.getWriterId())) { 
-                        System.out.println("***** 해당 글은 '" + targetId + "'님의 글이 아닙니다. *****");
-                    } else {
-                        // 현재 보고 있는 글 정보를 CurrentBoard에 저장
-                        CurrentBoard.setBoardVO(vo);
-                        BoardPrint.print(vo);
-                        BoardController.view(vo); 
-                        // 다 보고 나오면 초기화
-                        CurrentBoard.setBoardVO(null);
+                        // 2. 결과 처리
+                        if (vo == null) {
+                            System.out.println("***** 해당 번호의 글이 없습니다. *****");
+                        } else if (!targetId.equals(vo.getWriterId())) { 
+                            System.out.println("***** 해당 글은 '" + targetId + "'님의 글이 아닙니다. *****");
+                        } else {
+                            // 정상일 때만 실행
+                            CurrentBoard.setBoardVO(vo);
+                            BoardPrint.print(vo);
+                            BoardController.view(vo); 
+                            CurrentBoard.setBoardVO(null);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("\n***** 존재하지 않는 글이거나 삭제된 게시글입니다. *****\n");
                     }
                 } else if (menu.equals("0")) {
                     break; // 내부 반복문 탈출 -> 다시 아이디 입력 받으러 감
