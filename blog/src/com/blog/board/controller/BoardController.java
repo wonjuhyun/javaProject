@@ -27,33 +27,32 @@ public class BoardController {
             System.out.println("============================");
             System.out.println("1. 게시글 리스트 2. 게시글 글보기");
             System.out.println("3. 게시글 글수정 4. 게시글 글삭제");
-            System.out.println("0. 나가기");
+            System.out.println("0. 이전화면");
             System.out.println("============================");
             System.out.println("번호를 입력해주세요. >>>");
             String menu = In.getStr(); 
             int no;
             System.out.println();
             switch (menu) {
-                case "1":
+                case "1":// 게시글 리스트
                     System.out.println("게시글 리스트");
                     List<BoardVO> list = (List<BoardVO>) Execute.execute(new BoardListService(), null);
                     BoardPrint.print(list);
 
                     break;
                     
-                case "2":
+                case "2"://게시글 글보기
                 	 	System.out.println("게시글 글보기");
                      no = In.getInt("글번호");
                      BoardVO vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 1});
-                     CurrentBoard.setBoardVO(vo);
+                     CurrentBoard.setBoardVO(vo);// 현재 글 저장
                      BoardPrint.print(vo);
-                     view(vo); 
-                     CurrentBoard.setBoardVO(null);
-                    
+                     view(vo); // 상세 보기 실행
+                     CurrentBoard.setBoardVO(null);// 초기화    
                      break;
 
 
-                case "3":
+                case "3"://게시글 글수정
                     System.out.println("게시글 글수정");
                     no = In.getInt("글번호");
                     vo = new BoardVO();
@@ -74,7 +73,7 @@ public class BoardController {
                     }
                     break;
                     	
-                case "4":
+                case "4"://게시글 글삭제
                     System.out.println("게시글 글삭제");
                     no = In.getInt("글번호 입력");
 
@@ -100,7 +99,6 @@ public class BoardController {
                     }
                     break;
                 case "0":
-                    System.out.println("프로그램을 종료합니다.");
                     return; 
 
                 default:
@@ -110,17 +108,17 @@ public class BoardController {
         }
       
     }
-
+	// 게시글 상세 보기
 	public static Integer view(BoardVO vo) throws Exception {
 	    while (true) {
 	        System.out.println("========= 게시글 보기 =========");
 	        System.out.println("제목:" + vo.getTitle());
 	        System.out.println("내용:" + vo.getContent());
 
-	        // VO 객체에 현재 글번호와 로그인한 사용자 ID 담기
+	        // 공감 기능을 위한 VO 생성
 	        LikeVO likeVO = new LikeVO();
 	        likeVO.setPostNo(vo.getPostNo());
-	        likeVO.setLikerId(Login.getId()); // 로그인한 사용자 ID 가져오기
+	        likeVO.setLikerId(Login.getId()); // 로그인한 사용자 ID 
 	        LikeDAO likeDao = new LikeDAO();
 
 	        System.out.println("===================================================");
@@ -136,7 +134,7 @@ public class BoardController {
 
 	        switch (menu) {
 	            case "1":
-	                // 공감 기능 실행을 LikeController에 위임
+	              	// 공감하기/취소
 	                LikeController likeController = new LikeController();
 	                likeController.execute();
 
@@ -145,13 +143,12 @@ public class BoardController {
 	                System.out.println("현재 공감 수: " + count);
 	                break;
 
-	            case "2":
-	               
+	            case "2":// 댓글쓰기
 	                CommentController CommentController =new CommentController();
 	                CommentController.execute();
 	                break;
 
-	            case "3":
+	            case "3":// 구독 확인
 	                SubscribesController SubscribesController = new SubscribesController();
 	                SubscribesController.execute(Login.getId());
 	                break;
@@ -164,7 +161,7 @@ public class BoardController {
 	                System.out.println("잘못된 선택입니다.");
 	        }
 	    }
-	}
+	}    // 게시글 수정
       public Integer update (BoardVO vo) {
           while(true) {
         	System.out.println("======================= 게시글 수정 =======================");
@@ -199,7 +196,7 @@ public class BoardController {
             	}
             BoardPrint.print(vo);
         }
-    }    
+    }     // 게시글 삭제
       public static Integer delete(BoardVO vo) {
     	    while (true) {
     	        System.out.println("======================= 게시글 삭제 =======================");
