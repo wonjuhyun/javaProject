@@ -70,4 +70,10 @@ public class MemberDAO {
 
 		return id;
 	}
+
+	public Object changePw(MemberVO obj, int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

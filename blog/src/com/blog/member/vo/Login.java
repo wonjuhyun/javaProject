@@ -32,4 +32,8 @@ public class Login {
 		}
 		return null;
 	}
+	
+	public static Login getLoginVO() {
+		return null;
+	}
 }
