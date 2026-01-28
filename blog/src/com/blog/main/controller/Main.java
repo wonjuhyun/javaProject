@@ -1,6 +1,7 @@
 package com.blog.main.controller;
 
 import com.blog.board.controller.BoardController;
+import com.blog.board.controller.OtherBoardController;
 import com.blog.category.controller.CategoryController;
 import com.blog.main.service.Execute;
 import com.blog.member.controller.MemberController;
@@ -92,7 +93,7 @@ public class Main {
 						String id = (String) Execute.execute(new MemberSearchIdService(), vo11);
 						System.out.println("찾으시는 아이디 : " + id + "\n");
 					} else { // 로그인을 한 경우 - 블로그 방문하기 ===============================
-
+						new OtherBoardController().execute();
 					}
 					break;
 
