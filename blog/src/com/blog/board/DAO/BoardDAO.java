@@ -16,15 +16,16 @@ public class BoardDAO {
     ResultSet rs = null;
 
     // 게시글 전체 목록 조회
-    public List<BoardVO> list() throws Exception {
+    public List<BoardVO> list(String writerId) throws Exception {
         List<BoardVO> list = new ArrayList<>();
 
         con = DB.getConnection();
         String sql = "SELECT post_no, writer_id, title, content, hit, cate_no, "
                    + "created_at, updated_at "
-                   + "FROM Posts "
+                   + "FROM Posts where writer_id = ?"
                    + "ORDER BY post_no DESC";
         pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, writerId); 
         rs = pstmt.executeQuery();
 
         while (rs.next()) {

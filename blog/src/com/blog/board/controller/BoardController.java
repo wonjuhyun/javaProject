@@ -38,7 +38,6 @@ public class BoardController {
             System.out.println();
             switch (menu) {
                 case "1":
-                   // System.out.println("게시글 리스트");
                     List<BoardVO> list = (List<BoardVO>) Execute.execute(new BoardListService(), null);
                     BoardPrint.print(list);
                     break;
@@ -69,7 +68,6 @@ public class BoardController {
                     break;
 
                 case "4":// 게시글 글수정
-                    //System.out.println("게시글 글수정");
                     no = In.getInt("글번호");
                     vo = new BoardVO();
                     vo.setPostNo(no);
@@ -90,7 +88,6 @@ public class BoardController {
                     break;
                        
                 case "5":// 게시글 글삭제
-                  //  System.out.println("게시글 글삭제");
                     no = In.getInt("글번호 입력");
 
                     vo = (BoardVO) Execute.execute(new BoardViewService(), new int[]{no, 0}); // 조회만
