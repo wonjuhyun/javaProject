@@ -109,7 +109,7 @@ public class Main {
 					} else { // 로그인을 한 경우 - 나의 블로그 보기
 						while (true) {
 							System.out.println("===========================================");
-							System.out.println("<<< 블로그 방문하기 >>>");
+							System.out.println("<<< 나의 블로그 방문하기 >>>");
 							System.out.println(" 1. 카테고리  2. 게시글 메뉴  3. 구독  0. 이전");
 							System.out.println("===========================================");
 
