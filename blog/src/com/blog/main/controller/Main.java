@@ -15,8 +15,6 @@ import com.blog.util.io.In;
 
 public class Main {
 
-	private static String pw;
-
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("⋆｡˚ ☁︎ ˚｡⋆｡˚☽˚｡⋆⋆｡˚ ☁︎ ˚｡⋆｡˚☽˚｡⋆⋆｡˚ ☁︎ ˚｡⋆");
