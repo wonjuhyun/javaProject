@@ -13,7 +13,7 @@ public class BoardlistCategory implements Service{
 		 Integer cateNo = (Integer) obj;
 
 	      BoardDAO dao = new BoardDAO();
-	      List<BoardVO> list = dao.listCategory(cateNo);
+	      List<BoardVO> list = dao.listByCategory(cateNo);
 	        return list;
 	}
 
