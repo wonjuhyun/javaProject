@@ -138,13 +138,14 @@ public class BoardDAO {
     public Integer update(BoardVO vo) throws Exception {
         con = DB.getConnection();
         String sql = "UPDATE Posts "
-                   + "SET title = ?, content = ?, cate_no = ? "
+                   + "SET title = ?, content = ?, cate_no = ?  writer_id = ?"
                    + "WHERE post_no = ?";
         pstmt = con.prepareStatement(sql);
         pstmt.setString(1, vo.getTitle());
         pstmt.setString(2, vo.getContent());
         pstmt.setInt(3, vo.getCateNo());
-        pstmt.setInt(4, vo.getPostNo());
+        pstmt.setString(4, vo.getWriterId());        
+        pstmt.setInt(5, vo.getPostNo());
         int result = pstmt.executeUpdate();
         DB.close(con, pstmt);
         return result;
