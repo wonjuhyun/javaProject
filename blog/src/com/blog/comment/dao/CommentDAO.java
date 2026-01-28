@@ -68,7 +68,6 @@ public class CommentDAO {
 		pstmt.setString(2, vo.getContent());
 		pstmt.setString(3, vo.getWriterId());
 		// 5. 실행 & 6. 데이터 저장
-		// select - executeQuery() : rs, insert, update, delete - executeUpdate() : Integer
 		result = pstmt.executeUpdate();
 		// 7. 닫기
 		DB.close(con, pstmt);
@@ -115,8 +114,8 @@ public class CommentDAO {
 		// 1. 드라이버 확인 & 2. 연결 객체
 		con = DB.getConnection();
 		// 3. SQL
-		String sql = "select u.nickname, c.content, to_char(created_at, 'yyyy-mm-dd hh:mm:ss') created_at, "
-				+ " to_char(updated_at, 'yyyy-mm-dd hh:mm:ss') updated_at from comments c, users u "
+		String sql = "select u.nickname, c.content, to_char(c.created_at, 'yyyy-mm-dd hh:mm:ss') created_at, "
+				+ " to_char(c.updated_at, 'yyyy-mm-dd hh:mm:ss') updated_at from comments c, users u "
 				+ " where c.writer_id = ? and c.post_no = ? and u.id = c.writer_id";
 		// 4. 실행 객체 & 데이터 세팅
 		pstmt = con.prepareStatement(sql);

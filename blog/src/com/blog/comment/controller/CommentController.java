@@ -9,7 +9,6 @@ import com.blog.comment.service.CommentUpdateService;
 import com.blog.comment.service.CommentViewService;
 import com.blog.comment.service.CommentWriteService;
 import com.blog.comment.vo.Comment;
-import com.blog.main.controller.Main;
 import com.blog.main.service.Execute;
 import com.blog.member.vo.Login;
 import com.blog.util.io.CommentPrint;
@@ -87,7 +86,6 @@ public class CommentController {
 					vo = new Comment();
 					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					vo.setWriterId(Login.getId());
-					
 					// DB에서 내 댓글 가져오기
 					Comment myComment = (Comment) Execute.execute(new CommentViewService(), vo);
 					CommentPrint.print(myComment);
@@ -108,21 +106,32 @@ public class CommentController {
 					if (checkVO != null) {
 						// 2. 현재 내용 보여주기
 						System.out.println(" " + checkVO.getWriterNick() + " : " + checkVO.getContent());
-						System.out.println("-----------------------------------------------------------------");
+						System.out.println("-------------------------------------------------------------");
 						
 						// 3. 여기서 직접 입력을 받습니다. (기존 update 메서드 호출 제거)
 						String newContent = In.getStr(" 수정할 내용");
 						System.out.println("=============================================================");
 						
-						// 입력받은 내용을 VO에 세팅 (이게 있어야 DB에 반영됨)
-						checkVO.setContent(newContent);
+						System.out.println(" 입력하신 내용으로 수정하시겠습니까?");
+						System.out.println("-----------------------------------");
+						System.out.println(" 1. 예  0. 아니오");
+						String updateMenu = In.getStr("선택");
+						System.out.println("===================================");
 						
-						// 4. DB 업데이트 실행 (변경된 내용이 담긴 checkVO를 전달)
-						result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
-						
-						if (result >= 1) System.out.println(" ***** 수정이 완료되었습니다. *****");
-						else System.out.println(" ***** 수정 실패 *****");
-						
+						// 3. 선택에 따른 처리
+						if (updateMenu.equals("1")) {
+							// 입력받은 내용을 VO에 세팅 (이게 있어야 DB에 반영됨)
+							checkVO.setContent(newContent);
+							
+							// 4. DB 업데이트 실행 (변경된 내용이 담긴 checkVO를 전달)
+							result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
+							
+							if (result >= 1) System.out.println(" ***** 수정이 완료되었습니다. *****");
+							else System.out.println(" ***** 수정 실패 *****");
+						} else {
+							// 0번(취소) 혹은 다른 키를 눌렀을 때
+							System.out.println("\n ***** 수정이 취소되었습니다. *****");
+						}
 					} else {
 						System.out.println(" 이 게시글에 작성하신 댓글이 없습니다. ");
 						System.out.println("=============================================================");
@@ -169,7 +178,7 @@ public class CommentController {
 				case "0" :
 					return;
 				default :
-//					Main.invalidMenuPrint();
+					System.out.println("***** 잘못된 메뉴입니다. 다시 입력하세요. *****\n");
 				}  // switch 끝
 				System.out.println();  // 화면을 구분하는 빈 줄 출력
 			}  // try 정상처리 끝
