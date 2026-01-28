@@ -14,13 +14,14 @@ import com.blog.like.dao.LikeDAO;
 import com.blog.like.vo.LikeVO;
 import com.blog.main.service.Execute;
 import com.blog.member.vo.Login;
+import com.blog.subscribe.controller.SubscribesController;
 import com.blog.util.io.BoardPrint;
 import com.blog.util.io.In;
 
 public class BoardController {
-    
-	@SuppressWarnings({ "unchecked", "unused" })
-	public static void main(String[] args) throws Exception {
+	
+	@SuppressWarnings({ "unchecked" })
+	public static void execute() throws Exception {
         while (true) {
             System.out.println("========= 게시글 메뉴 =========");
             System.out.println("============================");
@@ -109,7 +110,7 @@ public class BoardController {
         }
       
     }
-	@SuppressWarnings("null")
+
 	public static Integer view(BoardVO vo) throws Exception {
 	    while (true) {
 	        System.out.println("========= 게시글 보기 =========");
@@ -145,15 +146,14 @@ public class BoardController {
 	                break;
 
 	            case "2":
-	                System.out.println("댓글 쓰기 기능으로 이동");
-	                // CommentController 호출 예정
+	               
 	                CommentController CommentController =new CommentController();
 	                CommentController.execute();
 	                break;
 
 	            case "3":
-	                System.out.println("구독한 블로그 확인 기능으로 이동");
-	                // SubscribeController 호출 예정
+	                SubscribesController SubscribesController = new SubscribesController();
+	                SubscribesController.execute(Login.getId());
 	                break;
 
 	            case "0":

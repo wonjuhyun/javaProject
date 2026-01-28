@@ -102,7 +102,6 @@ public  String getCreatedAt() {//작성일 가져오기
 }
 
 public void setCreatedAt(String createdAt) { //작성일 설정
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	this.createdAt = createdAt;
 
 }
@@ -114,7 +113,6 @@ public  String getUpdatedAt() {//수정일 가져오기
 }
 
 public void setUpdatedAt(String updatedAt) { //수정일 설정
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	this.updatedAt = updatedAt;
 
 	}
