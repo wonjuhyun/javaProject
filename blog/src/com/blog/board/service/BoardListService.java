@@ -12,6 +12,4 @@ public class BoardListService implements Service {
 		BoardDAO dao = new BoardDAO();
 		return dao.list(Login.getId());
 	}
-	
-
 }

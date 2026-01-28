@@ -10,7 +10,6 @@ import com.blog.board.vo.BoardVO;
 import com.blog.util.db.DB;
 
 public class BoardDAO {
-
     Connection con = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
