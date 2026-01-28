@@ -17,13 +17,8 @@ import com.blog.util.io.In;
 public class CommentController {
 
 	public void execute() {
-		// 종료를 선택하기 전까지 무한반복
-		// while(~) - ~ 조건이 true인 동안 반복 처리한다
-		//   - 빠져나가는 방법 : break;
 		while (true) {
 			try {
-				// 일반 게시판 처리
-				// 1. 메뉴 출력 - 일반 게시판이 가지고 있는 기능
 				System.out.println();
 				System.out.println("<< 댓글 메뉴 >>");
 				System.out.println("=============================================");
@@ -31,12 +26,9 @@ public class CommentController {
 				System.out.println(" 4. 댓글 수정  5. 댓글 삭제  0. 이전");
 				System.out.println("=============================================");
 				
-				// 2. 메뉴 입력
 				String menu = In.getStr("메뉴 입력");
 				System.out.println("\n");  // 줄바꿈
 				
-				// 3. 메뉴 처리 - switch
-				// 사용 변수 선언
 				Comment vo;
 				Integer result;
 				
@@ -44,12 +36,10 @@ public class CommentController {
 				
 				// 댓글 리스트
 				case "1" :
-					// 현재 게시글 번호를 담아서 서비스로 전송
 					vo = new Comment();
 					vo.setPostNo(CurrentBoard.getBoardVO().getPostNo());
 					
 					@SuppressWarnings("unchecked")
-					// vo를 파라미터로 전달
 					List<Comment> list = (List<Comment>) Execute.execute(new CommentListService(), vo); 
 					CommentPrint.print(list);
 					break;
@@ -104,7 +94,7 @@ public class CommentController {
 						System.out.println(" " + checkVO.getWriterNick() + " : " + checkVO.getContent());
 						System.out.println("-------------------------------------------------------------");
 						
-						// 3. 여기서 직접 입력을 받습니다. (기존 update 메서드 호출 제거)
+						// 3. 여기서 직접 입력을 받는다.
 						String newContent = In.getStr(" 수정할 내용");
 						System.out.println("=============================================================");
 						
@@ -116,16 +106,11 @@ public class CommentController {
 						
 						// 3. 선택에 따른 처리
 						if (updateMenu.equals("1")) {
-							// 입력받은 내용을 VO에 세팅 (이게 있어야 DB에 반영됨)
 							checkVO.setContent(newContent);
-							
-							// 4. DB 업데이트 실행 (변경된 내용이 담긴 checkVO를 전달)
 							result = (Integer) Execute.execute(new CommentUpdateService(), checkVO);
-							
 							if (result >= 1) System.out.println(" ***** 수정이 완료되었습니다. *****");
 							else System.out.println(" ***** 수정 실패 *****");
-						} else {
-							// 0번(취소) 혹은 다른 키를 눌렀을 때
+						} else {  // 0번(취소) 혹은 다른 키를 눌렀을 때
 							System.out.println("\n ***** 수정이 취소되었습니다. *****");
 						}
 					} else {
@@ -189,15 +174,4 @@ public class CommentController {
 			}  // catch 끝
 		}  // while(true) 끝
 	}  // execute() 끝
-	
-	// 데이터를 수정하는 메서드
-	// 전달된 vo는 주소가 전달된다. 안에서 수정하면 밖에서도 수정이 같이 된다
-	public Integer update (Comment vo) {
-		while(true) {
-			// 수정 메뉴 입력
-			vo.setContent(In.getStr("내용"));
-			// 수정된 내용 출력
-			CommentPrint.print(vo);
-		}  // while(true) 끝
-	}  // update() 끝
 }
