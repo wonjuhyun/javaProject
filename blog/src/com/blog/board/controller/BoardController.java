@@ -19,7 +19,6 @@ import com.blog.util.io.BoardPrint;
 import com.blog.util.io.In;
 
 public class BoardController {
-	
 	@SuppressWarnings({ "unchecked" })
 	public static void execute() throws Exception {
         while (true) {
