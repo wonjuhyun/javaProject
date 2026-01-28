@@ -1,6 +1,7 @@
 package com.blog.main.controller;
 
 import com.blog.board.controller.BoardController;
+import com.blog.category.controller.CategoryController;
 import com.blog.main.service.Execute;
 import com.blog.member.controller.MemberController;
 import com.blog.member.service.MemberChangePwService;
@@ -116,7 +117,7 @@ public class Main {
 
 							switch (menu1) {
 							case "1": // 카테고리 리스트로 이동
-								// new CategoryController().execute();
+								new CategoryController().execute();
 								break;
 
 							case "2": // 게시글 메뉴로 이동
@@ -135,7 +136,7 @@ public class Main {
 						}
 					}
 					break;
-					
+
 				case "0":
 					System.out.println("프로그램을 종료합니다.");
 					System.exit(0);
